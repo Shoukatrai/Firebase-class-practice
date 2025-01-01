@@ -1,8 +1,12 @@
-import { addDoc, app, collection, db, doc, getDocs, updateDoc,deleteDoc } from "./firebase.js";
+import { addDoc, app, collection, db, doc, getDocs, updateDoc,deleteDoc, auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "./firebase.js";
 
 //getting elements from html
 const inputNote = document.querySelector("#inputNote");
-const cardParent = document.querySelector("#cardParent")
+const cardParent = document.querySelector("#cardParent");
+const emailInput = document.querySelector("#emailInput");
+const passwordInput = document.querySelector("#passwordInput");
+const loginEmail = document.querySelector("#loginEmail");
+const loginPassword = document.querySelector("#loginPassword");
 //adding data
 const addNote = async ()=>{
     try {
@@ -74,9 +78,29 @@ const deleteNote = (element)=>{
     fetchingData()
 }
 
+const signUp = async ()=>{
+    console.log("signUp")
+    try {
+        const user = await createUserWithEmailAndPassword(auth, emailInput.value ,passwordInput.value)
+        console.log(user)
+    } catch (error) {
+        console.log(error.message)
+    }
+}
 
 
+const loginUp = async()=>{
+    try {
+        await signInWithEmailAndPassword(auth , loginEmail.value , loginPassword.value)
+        console.log("Login successful")
+    } catch (error) {
+        console.log(error.code)
+    }
+    
+}
 window.addNote = addNote
 window.fetchingData = fetchingData 
 window.updateData  = updateData  
 window.deleteNote   = deleteNote   
+window.signUp   = signUp   
+window.loginUp   = loginUp   
