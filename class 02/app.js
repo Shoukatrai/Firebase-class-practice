@@ -1,4 +1,4 @@
-import { addDoc, app, collection, db, getDocs } from "./firebase.js";
+import { addDoc, app, collection, db, doc, getDocs, updateDoc,deleteDoc } from "./firebase.js";
 
 //getting elements from html
 const inputNote = document.querySelector("#inputNote");
@@ -38,8 +38,8 @@ const fetchingData = async ()=>{
             cardParent.innerHTML += `<div class="card p-3 mt-3 d-flex justify-content-between">
             ${docs.data().todo}
           <div class="btns">
-              <button class="me-3 btn btn-info">EDIT</button>
-              <button class="me-3 btn btn-danger">DELETE</button>
+              <button class="me-3 btn btn-info" onclick = "updateData(this)" id = "${docs.id}">EDIT</button>
+              <button class="me-3 btn btn-danger" onclick = "deleteNote(this)" id = "${docs.id}">DELETE</button>
           </div>
         </div>` 
         })
@@ -49,5 +49,34 @@ const fetchingData = async ()=>{
 
 }
 
+
+const updateData = async (ele)=>{
+    console.log("updateData " ,ele.id)
+    try {
+        const editValue = prompt("Enter an edit value..");
+        console.log(editValue)
+        if(!editValue){
+            alert("Invalid value!")
+            return
+        }
+        await updateDoc(doc(db, "newNote" , ele.id), {
+            todo: editValue
+        })
+        fetchingData()
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const deleteNote = (element)=>{
+    console.log("deleteNote" , element.id)
+    deleteDoc(doc(db, "newNote" , element.id));
+    fetchingData()
+}
+
+
+
 window.addNote = addNote
 window.fetchingData = fetchingData 
+window.updateData  = updateData  
+window.deleteNote   = deleteNote   
