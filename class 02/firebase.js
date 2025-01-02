@@ -32,5 +32,5 @@ export {
     deleteDoc,
     auth,
     createUserWithEmailAndPassword ,
-    signInWithEmailAndPassword
+    signInWithEmailAndPassword,
 }
